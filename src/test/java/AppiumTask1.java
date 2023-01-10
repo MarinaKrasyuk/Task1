@@ -22,16 +22,22 @@ public class AppiumTask1 {
     private String endTime;
     private WebElement okButton;
 
+    private static final String PLATFORM_NAME = "platformName";
+    private static final String AUTOMATION_NAME = "automationName";
+    private static final String UDID = "udid";
+    private static final String APP_ACTIVITY = "appActivity";
+    private static final String APP_PACKAGE = "appPackage";
+
     @Before
     public void setUp() throws MalformedURLException {
         URL driverUrl = new URL("http://0.0.0.0:4723/wd/hub");
 
         DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability("platformName", "Android");
-        caps.setCapability("automationName" , "UiAutomator2");
-        caps.setCapability("udid", "emulator-5554");
-        caps.setCapability("appActivity", "com.android.calendar.event.LaunchInfoActivity");
-        caps.setCapability("appPackage", "com.google.android.calendar");
+        caps.setCapability(PLATFORM_NAME, "Android");
+        caps.setCapability(AUTOMATION_NAME , "UiAutomator2");
+        caps.setCapability(UDID, "emulator-5554");
+        caps.setCapability(APP_ACTIVITY, "com.android.calendar.event.LaunchInfoActivity");
+        caps.setCapability(APP_PACKAGE, "com.google.android.calendar");
 
         driver = new AndroidDriver(driverUrl, caps);
 
