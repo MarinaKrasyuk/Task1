@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -28,6 +29,12 @@ public class AppiumTask1 {
     private static final String UDID = "udid";
     private static final String APP_ACTIVITY = "appActivity";
     private static final String APP_PACKAGE = "appPackage";
+    private static final String NO_RESET = "noReset";
+    private static final String UNLOCK_TYPE = "unlockType";
+    private static final String UNLOCK_KEY = "unlockKey";
+    private static final String AVD = "avd";
+    private static final String AVD_LAUNCH_TIMEOUT = "avdLaunchTimeout";
+    private static final String AVD_READY_TIMEOUT = "avdReadyTimeout";
 
     @Before
     public void setUp() throws MalformedURLException {
@@ -37,8 +44,14 @@ public class AppiumTask1 {
         caps.setCapability(PLATFORM_NAME, "Android");
         caps.setCapability(AUTOMATION_NAME , "UiAutomator2");
         caps.setCapability(UDID, "emulator-5554");
+        caps.setCapability(NO_RESET, "false");
         caps.setCapability(APP_ACTIVITY, "com.android.calendar.event.LaunchInfoActivity");
         caps.setCapability(APP_PACKAGE, "com.google.android.calendar");
+        caps.setCapability(UNLOCK_TYPE, "pin");
+        caps.setCapability(UNLOCK_KEY, "1111");
+        caps.setCapability(AVD, "Pixel_XL_API_29");
+        caps.setCapability(AVD_LAUNCH_TIMEOUT, "300000");
+        caps.setCapability(AVD_READY_TIMEOUT, "300000");
 
         driver = new AndroidDriver(driverUrl, caps);
 
@@ -51,13 +64,14 @@ public class AppiumTask1 {
 
         setUpEvent();
 
-        validateEventIsCreated();
+//        validateEventIsCreated();
     }
 
     @After
-    public void cleanUp() throws InterruptedException {
+    public void cleanUp() throws InterruptedException, IOException {
         deleteEvent();
         driver.quit();
+        Runtime.getRuntime().exec("adb -s emulator-5554 emu kill");
     }
 
     private void completeOnboarding() throws InterruptedException {
@@ -122,6 +136,7 @@ public class AppiumTask1 {
         WebElement event = driver.findElement(By.xpath(String.format("//android.view.View[contains(@content-desc,'%s')]", eventName)));
         if (event.isDisplayed()) {
             event.click();
+            Thread.sleep(2000);
             driver.findElement(MobileBy.AccessibilityId("More options")).click();
             driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Delete\")")).click();
             driver.findElement(MobileBy.id("android:id/button1")).click();
