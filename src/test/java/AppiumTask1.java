@@ -1,3 +1,4 @@
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Assert;
@@ -62,21 +63,21 @@ public class AppiumTask1 {
     private void completeOnboarding() throws InterruptedException {
         WebElement nextButton = driver.findElement(By.id("right_arrow_touch"));
         if(nextButton.isDisplayed()){
-            while (driver.findElements(By.id("done_button")).size()==0) {
+            while (driver.findElements(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Got it\")")).size()==0) {
                 nextButton.click();
                 Thread.sleep(200);
             }
-            driver.findElement(By.id("done_button")).click();
+            driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Got it\")")).click();
         }
     }
 
     private void setUpEvent() throws InterruptedException {
         Thread.sleep(2000);
-        driver.findElement(By.id("floating_action_button")).click();
-        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Event button']")).click();
-        driver.findElement(By.id("title_edit_text")).sendKeys(eventName);
+        driver.findElement(MobileBy.AccessibilityId("Create new event and more")).click();
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Event']")).click();
+        driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Enter title\")")).sendKeys(eventName);
         driver.findElement(By.xpath("//android.widget.Button[contains(@content-desc,'Start time:')]")).click();
-        WebElement toggleMode =  driver.findElement(By.id("android:id/toggle_mode"));
+         WebElement toggleMode =  driver.findElement(MobileBy.AccessibilityId("Switch to text input mode for the time input."));
         toggleMode.click();
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -89,7 +90,7 @@ public class AppiumTask1 {
 
         driver.findElement(By.xpath("//android.widget.Button[contains(@content-desc,'End time:')]")).click();
         Thread.sleep(2000);
-        toggleMode.click();
+        driver.findElement(MobileBy.AccessibilityId("Switch to text input mode for the time input.")).click();
         LocalDateTime endDateTime = startDateTime.plusSeconds(90 * 60);
         endTime = formatter.format(endDateTime);
         setUpTime(endTime.substring(0,2),endTime.substring(3,5), endTime.substring(6,8));
@@ -107,7 +108,7 @@ public class AppiumTask1 {
             Thread.sleep(1000);
             driver.findElement(By.xpath(String.format("//android.widget.CheckedTextView[contains(@text,'%s')]",markerFormat))).click();
         }
-        okButton = driver.findElement(By.id("android:id/button1"));
+        okButton = driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"OK\")"));
         okButton.click();
     }
 
@@ -121,9 +122,9 @@ public class AppiumTask1 {
         WebElement event = driver.findElement(By.xpath(String.format("//android.view.View[contains(@content-desc,'%s')]", eventName)));
         if (event.isDisplayed()) {
             event.click();
-            driver.findElement(By.xpath("//android.widget.ImageView[@content-desc='More options']")).click();
-            driver.findElement(By.xpath("//android.widget.TextView[contains(@text,'Delete')]")).click();
-            okButton.click();
+            driver.findElement(MobileBy.AccessibilityId("More options")).click();
+            driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"Delete\")")).click();
+            driver.findElement(MobileBy.id("android:id/button1")).click();
         }
 
     }
