@@ -37,12 +37,12 @@ public class NewEventScreen extends BaseScreen{
     public void setUpEvent(String eventName,String locationName, String startHour, String startMinute, String startMarkerFormat,
                            String endHour, String endMinute, String endMarkerFormat) {
         enterEventName(eventName);
-        waitAndClick(driver.findElement(START_TIME_BUTTON));
-        waitAndClick(driver.findElement(TOGGLE_MODE));
+        waitAndClick(START_TIME_BUTTON);
+        waitAndClick(TOGGLE_MODE);
 
         setUpTime(startHour,startMinute, startMarkerFormat);
-        waitAndClick(driver.findElement(END_TIME_BUTTON));
-        waitAndClick(driver.findElement(INPUT_TEXT_MODE));
+        waitAndClick(END_TIME_BUTTON);
+        waitAndClick(INPUT_TEXT_MODE);
 
         setUpTime(endHour,endMinute,endMarkerFormat);
 
