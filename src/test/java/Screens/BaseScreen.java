@@ -64,5 +64,4 @@ public class BaseScreen {
         wait.until(ExpectedConditions.elementToBeClickable(input));
         input.sendKeys(text);
     }
-
 }

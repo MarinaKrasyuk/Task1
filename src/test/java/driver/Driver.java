@@ -1,6 +1,8 @@
-package tests;
+package driver;
 
+import constant.ConstantEnv;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
@@ -10,15 +12,12 @@ import static io.appium.java_client.remote.AndroidMobileCapabilityType.*;
 import static io.appium.java_client.remote.MobileCapabilityType.*;
 import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 
-public class CommonSteps {
-    public static AndroidDriver driver;
+public class Driver {
 
-    private final String UNLOCK_TYPE = "unlockType";
-    private final String UNLOCK_KEY = "unlockKey";
+    private static final String UNLOCK_TYPE = "unlockType";
+    private static final String UNLOCK_KEY = "unlockKey";
 
-    public AndroidDriver initialDriver() throws MalformedURLException {
-        URL driverUrl = new URL("http://0.0.0.0:4723/wd/hub");
-
+    public static AndroidDriver getDriver() throws MalformedURLException {
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(PLATFORM_NAME, "Android");
         caps.setCapability(AUTOMATION_NAME , "UiAutomator2");
@@ -32,6 +31,14 @@ public class CommonSteps {
         caps.setCapability(AVD_LAUNCH_TIMEOUT, "1000000");
         caps.setCapability(AVD_READY_TIMEOUT, "1000000");
 
-        return new AndroidDriver(driverUrl, caps);
+        caps.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 600);
+        return new AndroidDriver(new URL(ConstantEnv.URL_NAME), caps);
+    }
+
+    public static void closeDriver(AndroidDriver driver){
+        System.out.print("close(): ");
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }

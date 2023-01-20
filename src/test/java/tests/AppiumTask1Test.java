@@ -3,23 +3,23 @@ package tests;
 import Screens.CalendarScreen;
 import Screens.NewEventScreen;
 import Screens.OnboardingScreen;
-import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.AllureId;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Tag;
-import org.springframework.context.annotation.Description;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import utils.RunnerExtension;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class AppiumTask1Test extends CommonSteps {
-    private AndroidDriver driver;
+@ExtendWith(RunnerExtension.class)
+public class AppiumTask1Test extends BaseTest {
     private String eventName;
     private String locationName;
     private String startTime;
@@ -28,9 +28,8 @@ public class AppiumTask1Test extends CommonSteps {
     private CalendarScreen calendarScreen;
     private NewEventScreen newEventScreen;
 
-  @Before
-    public void setUp() throws MalformedURLException {
-        driver = initialDriver();
+  @BeforeEach
+    public void setUp(){
         eventName = "Test Event";
         locationName = "Minsk,Belarus";
         onboardingScreen = new OnboardingScreen(driver);
@@ -38,21 +37,19 @@ public class AppiumTask1Test extends CommonSteps {
         newEventScreen = new NewEventScreen(driver);
     }
 
-    @Test
-    @Tag("Calendar test")
     @AllureId("101")
     @Description("Set up Calendar event for Current time plus 1 hour")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
     public void task1Test() {
         onboardingScreen.completeOnboarding();
         calendarScreen.navigateToNewEventScreen();
         setUpEventToTheCalendar();
     }
 
-    @AfterAll
-    public void cleanUp() throws IOException {
+    @AfterEach
+    public void cleanUp() {
         calendarScreen.deleteEvent(eventName);
-        driver.quit();
-        Runtime.getRuntime().exec("adb -s emulator-5554 emu kill");
     }
 
     private void setUpEventToTheCalendar() {
@@ -67,6 +64,6 @@ public class AppiumTask1Test extends CommonSteps {
 
         newEventScreen.setUpEvent(eventName,locationName, startTime.substring(0,2),startTime.substring(3,5), startTime.substring(6,8),
                 endTime.substring(0,2),endTime.substring(3,5), endTime.substring(6,8));
-//        calendarScreen.validateEventIsCreated(eventName,startTime, endTime);
+        calendarScreen.validateEventIsCreated(eventName,startTime);
     }
 }

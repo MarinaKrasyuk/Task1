@@ -20,7 +20,7 @@ public class NewEventScreen extends BaseScreen{
     private final By SAVE_BUTTON = MobileBy.id("save");
     private final By ADD_LOCATION_BUTTON = MobileBy.AndroidUIAutomator("new UiSelector().text(\"Add location\")");
     private final By ALLOW_PERMISSION_BUTTON = MobileBy.id("com.android.permissioncontroller:id/permission_allow_foreground_only_button");
-    private final By SEARCH_INPU = MobileBy.id("search_field");
+    private final By SEARCH_INPUT = MobileBy.id("search_field");
     private final By LOCATION_BUTTON = MobileBy.AndroidUIAutomator("new UiSelector().text(\"Minsk\")");
 
     private final String XPATH_PATTERN = "//android.widget.CheckedTextView[contains(@text,'%s')]";
@@ -65,7 +65,7 @@ public class NewEventScreen extends BaseScreen{
     public void addLocation(String locationName){
         waitAndClick(driver.findElement(ADD_LOCATION_BUTTON));
         waitAndClick(ALLOW_PERMISSION_BUTTON);
-        clearAndEnterTextToInput(SEARCH_INPU, locationName);
+        clearAndEnterTextToInput(SEARCH_INPUT, locationName);
         waitAndClick(driver.findElement(LOCATION_BUTTON));
     }
 }

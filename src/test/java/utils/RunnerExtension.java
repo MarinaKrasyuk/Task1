@@ -1,5 +1,6 @@
 package utils;
 
+import constant.ConstantEnv;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -18,8 +19,7 @@ public class RunnerExtension implements AfterTestExecutionCallback {
             SimpleDateFormat formatForDateNow = new SimpleDateFormat("yyyy.MM.dd_hh.mm.ss");
             String date_str=formatForDateNow.format(date);
             Allure.description("Date and Time: "+date_str);
-           // Allure.description("Test is Failed on " + ConstantEnv.BROWSER+" and environment: "+ConstantEnv.ENVIRONMENT);
+            Allure.description("Test is Failed on " + ConstantEnv.PLATFORM_NAME);
         }
-
     }
 }
