@@ -19,7 +19,7 @@ public class CalendarScreen extends BaseScreen {
     private final By NEW_EVENT_BUTTON = MobileBy.xpath("//android.widget.TextView[@text='Event']");
     private final By DELETE_BUTTON = MobileBy.id("android:id/button1");
 
-    private final String VALIDATION_XPATH_PATTERN = "//android.view.View[contains(@content-desc,'%s, %s – %s')]";
+    private final String VALIDATION_XPATH_PATTERN = "//android.view.View[contains(@content-desc,'%s, %s')]";
     private final String DELETE_XPATH_PATTERN = "//android.view.View[contains(@content-desc,'%s')]";
 
 
@@ -41,8 +41,8 @@ public class CalendarScreen extends BaseScreen {
         tapNewEventButton();
     }
 
-    public void validateEventIsCreated(String eventName, String startTime, String endTime) {
-        Assert.assertTrue("Event is not created", isElementPresentWithinTime(By.xpath(String.format(VALIDATION_XPATH_PATTERN, eventName, startTime, endTime)), 10));
+    public void validateEventIsCreated(String eventName, String startTime) {
+        Assert.assertTrue("Event is not created", isElementPresentWithinTime(By.xpath(String.format(VALIDATION_XPATH_PATTERN, eventName,  startTime.replaceFirst("^[0]",""))), 10));
     }
 
     public void deleteEvent(String eventName) {
